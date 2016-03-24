@@ -13,7 +13,7 @@ namespace DoExcel
 {
     public partial class Form1 : Form
     {
-        public string originSourcePath = "D:/c#project/vbProject/excel/libin.xls";
+        public string originSourcePath = "D:/c#project/vbProject/excel/data.xls";
         public Form1()
         {
             InitializeComponent();
@@ -30,7 +30,7 @@ namespace DoExcel
         {
             ExcelHelper excelHelper = new ExcelHelper();
 
-            excelHelper.WriteToExcel("D:/c#project/vbProject/excel/write.xls");
+            excelHelper.WriteToExcel("D:/c#project/vbProject/excel/demo1.xls");
         }
     }
 }

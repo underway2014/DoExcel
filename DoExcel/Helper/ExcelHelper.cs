@@ -82,7 +82,7 @@ namespace DoExcel.Helper
             }
 
             ICellStyle style1 = wb.CreateCellStyle();//样式
-            style1.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Left;//文字水平对齐方式
+            style1.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Center;//文字水平对齐方式
             style1.VerticalAlignment = NPOI.SS.UserModel.VerticalAlignment.Center;//文字垂直对齐方式
                                                                                   //设置边框
             style1.BorderBottom = NPOI.SS.UserModel.BorderStyle.Thin;
@@ -91,18 +91,25 @@ namespace DoExcel.Helper
             style1.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
             style1.WrapText = true;//自动换行
 
+            ICellStyle headstyle = wb.CreateCellStyle();//样式
+            headstyle.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Center;//文字水平对齐方式
+            headstyle.VerticalAlignment = NPOI.SS.UserModel.VerticalAlignment.Center;//文字垂直对齐方式
+                                                                                     //设置边框
+            headstyle.BorderBottom = NPOI.SS.UserModel.BorderStyle.None;
+            headstyle.BorderLeft = NPOI.SS.UserModel.BorderStyle.Thin;
+            headstyle.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
+            headstyle.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
+            headstyle.WrapText = true;//自动换行
+
             ICellStyle style2 = wb.CreateCellStyle();//样式
-            IFont font1 = wb.CreateFont();//字体
-            font1.FontName = "楷体";
-            font1.Color = HSSFColor.Red.Index;//字体颜色
-            font1.Boldweight = (short)FontBoldWeight.Normal;//字体加粗样式
-            style2.SetFont(font1);//样式里的字体设置具体的字体样式
-                                  //设置背景色
-            style2.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.Yellow.Index;
-            style2.FillPattern = FillPattern.SolidForeground;
-            style2.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.Yellow.Index;
-            style2.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Left;//文字水平对齐方式
+            style2.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Right;//文字水平对齐方式
             style2.VerticalAlignment = NPOI.SS.UserModel.VerticalAlignment.Center;//文字垂直对齐方式
+                                                                                  //设置边框
+            style2.BorderBottom = NPOI.SS.UserModel.BorderStyle.Thin;
+            style2.BorderLeft = NPOI.SS.UserModel.BorderStyle.Thin;
+            style2.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
+            style2.BorderTop = NPOI.SS.UserModel.BorderStyle.None;
+            style2.WrapText = true;//自动换行
 
             ICellStyle dateStyle = wb.CreateCellStyle();//样式
             dateStyle.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Left;//文字水平对齐方式
@@ -122,13 +129,24 @@ namespace DoExcel.Helper
             }
 
             //测试数据
-            int rowCount = 3, columnCount = 4;
+            int rowCount = 16, columnCount = 6;
             object[,] data = {
-        {"列0", "列1", "列2", "列3"},
-        {"", 400, 5.2, 6.01},
-        {"", true, "2014-07-02", DateTime.Now}
-        //日期可以直接传字符串，NPOI会自动识别
-        //如果是DateTime类型，则要设置CellStyle.DataFormat，否则会显示为数字
+        {"abcdef", "", "", "", "", ""},
+        {"","", "", "", "", ""},
+        {"创建日期","", "", "", "", ""},
+        {"基本信息","", "", "", "", ""},
+        {"分公司","", "保单号", "", "缴费金额", ""},
+        {"销售渠道","", "生效日期", "", "缴费年限", ""},
+        {"主要险种","", "投保人姓名", "", "投保人日期", ""},
+        {"联系电话","", "联系地址", "", "", ""},
+        {"首期信息","", "", "", "", ""},
+        {"签单人员","", "签单率", "", "签单业务员在职情况", ""},
+        {"销售网点","", "", "", "机构继续率", ""},
+        {"售卖过程","", "", "", "", ""},
+        {"客户购买原因","", "", "", "", ""},
+        {"客户经济状况","", "", "", "", ""},
+        {"续期服务轨迹","", "", "", "", ""},
+        {"服务时间（年月日）","服务人员", "服务内容（拜访过程)", "服务效果（拜访结果）", "服务需求（资源需求）", "核查（人员及结果）"},
     };
 
             IRow row;
@@ -140,7 +158,18 @@ namespace DoExcel.Helper
                 for (int j = 0; j < columnCount; j++)
                 {
                     cell = row.CreateCell(j);//创建第j列
-                    cell.CellStyle = j % 2 == 0 ? style1 : style2;
+                    if(i == 2)
+                    {
+                        cell.CellStyle = style2;
+                    }
+                    else if (i == 0 || i == 1)
+                    {
+                        cell.CellStyle = headstyle;
+                    }
+                    else
+                    {
+                        cell.CellStyle = style1;
+                    }
                     //根据数据类型设置不同类型的cell
                     object obj = data[i, j];
                     SetCellValue(cell, data[i, j]);
@@ -156,8 +185,11 @@ namespace DoExcel.Helper
 
             //合并单元格，如果要合并的单元格中都有数据，只会保留左上角的
             //CellRangeAddress(0, 2, 0, 0)，合并0-2行，0-0列的单元格
-            CellRangeAddress region = new CellRangeAddress(0, 2, 0, 0);
+            CellRangeAddress region = new CellRangeAddress(0, 1, 0, 5);
             sheet.AddMergedRegion(region);
+
+            CellRangeAddress region1 = new CellRangeAddress(2, 2, 0, 5);
+            sheet.AddMergedRegion(region1);
 
             try
             {
