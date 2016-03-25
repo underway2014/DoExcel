@@ -1,4 +1,5 @@
-﻿using NPOI.HSSF.UserModel;
+﻿using DoExcel.Model;
+using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
@@ -81,15 +82,29 @@ namespace DoExcel.Helper
                 wb = new XSSFWorkbook();
             }
 
+            IFont normalFont = wb.CreateFont();//字体
+            normalFont.FontName = "宋体";
+            normalFont.FontHeight = 220.0;
+
+            IFont headFont = wb.CreateFont();//字体
+            headFont.FontName = "宋体";
+            headFont.FontHeight = 400.0;
+            headFont.Boldweight = (short)FontBoldWeight.Bold;
+
+            IFont fontTitle = wb.CreateFont();//字体
+            fontTitle.FontName = "宋体";
+            fontTitle.FontHeight = 240.0;
+            fontTitle.Boldweight = (short)FontBoldWeight.Bold;//字体
+
             ICellStyle style1 = wb.CreateCellStyle();//样式
             style1.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Center;//文字水平对齐方式
             style1.VerticalAlignment = NPOI.SS.UserModel.VerticalAlignment.Center;//文字垂直对齐方式
-                                                                                  //设置边框
             style1.BorderBottom = NPOI.SS.UserModel.BorderStyle.Thin;
             style1.BorderLeft = NPOI.SS.UserModel.BorderStyle.Thin;
             style1.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
             style1.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
             style1.WrapText = true;//自动换行
+            style1.SetFont(normalFont);
 
             ICellStyle headstyle = wb.CreateCellStyle();//样式
             headstyle.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Center;//文字水平对齐方式
@@ -100,6 +115,7 @@ namespace DoExcel.Helper
             headstyle.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
             headstyle.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
             headstyle.WrapText = true;//自动换行
+            headstyle.SetFont(headFont);
 
             ICellStyle style2 = wb.CreateCellStyle();//样式
             style2.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Right;//文字水平对齐方式
@@ -110,6 +126,7 @@ namespace DoExcel.Helper
             style2.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
             style2.BorderTop = NPOI.SS.UserModel.BorderStyle.None;
             style2.WrapText = true;//自动换行
+            style2.SetFont(normalFont);
 
             ICellStyle dateStyle = wb.CreateCellStyle();//样式
             dateStyle.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Left;//文字水平对齐方式
@@ -118,6 +135,19 @@ namespace DoExcel.Helper
             IDataFormat dataFormatCustom = wb.CreateDataFormat();
             dateStyle.DataFormat = dataFormatCustom.GetFormat("yyyy-MM-dd HH:mm:ss");
 
+            //
+            ICellStyle styleTitle = wb.CreateCellStyle();//样式
+            styleTitle.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Center;//文字水平对齐方式
+            styleTitle.VerticalAlignment = NPOI.SS.UserModel.VerticalAlignment.Center;//文字垂直对齐方式
+                                                                                      //设置边框
+            styleTitle.BorderBottom = NPOI.SS.UserModel.BorderStyle.Thin;
+            styleTitle.BorderLeft = NPOI.SS.UserModel.BorderStyle.Thin;
+            styleTitle.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
+            styleTitle.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
+            styleTitle.WrapText = true;//自动换行
+
+            styleTitle.SetFont(fontTitle);
+
             //创建一个表单
             ISheet sheet = wb.CreateSheet("Sheet0");
             //设置列宽
@@ -125,17 +155,19 @@ namespace DoExcel.Helper
             for (int i = 0; i < columnWidth.Length; i++)
             {
                 //设置列宽度，256*字符数，因为单位是1/256个字符
-                sheet.SetColumnWidth(i, 256 * columnWidth[i]);
+                sheet.SetColumnWidth(i, 256 * 14);
+
             }
+
 
             //测试数据
             int rowCount = 16, columnCount = 6;
             object[,] data = {
         {"abcdef", "", "", "", "", ""},
         {"","", "", "", "", ""},
-        {"创建日期","", "", "", "", ""},
+        {"创建日期：2016年01","", "", "", "", ""},
         {"基本信息","", "", "", "", ""},
-        {"分公司","", "保单号", "", "缴费金额", ""},
+        {"分支公司","", "保单号", "", "缴费金额", ""},
         {"销售渠道","", "生效日期", "", "缴费年限", ""},
         {"主要险种","", "投保人姓名", "", "投保人日期", ""},
         {"联系电话","", "联系地址", "", "", ""},
@@ -166,6 +198,14 @@ namespace DoExcel.Helper
                     {
                         cell.CellStyle = headstyle;
                     }
+                    else if( i == 3 || i== 14 || i == 8)
+                    {
+                        cell.CellStyle = styleTitle;
+                    }
+                    //else if( i == 10 || i == 11 || i == 12 || i == 13)
+                    //{
+
+                    //}
                     else
                     {
                         cell.CellStyle = style1;
@@ -191,11 +231,95 @@ namespace DoExcel.Helper
             CellRangeAddress region1 = new CellRangeAddress(2, 2, 0, 5);
             sheet.AddMergedRegion(region1);
 
+            CellRangeAddress region2 = new CellRangeAddress(3, 3, 0, 5);
+            sheet.AddMergedRegion(region2);
+
+            CellRangeAddress region8 = new CellRangeAddress(8, 8, 0, 5);
+            sheet.AddMergedRegion(region8);
+
+            CellRangeAddress region14 = new CellRangeAddress(14, 14, 0, 5);
+            sheet.AddMergedRegion(region14);
+
+            CellRangeAddress region3 = new CellRangeAddress(10, 10, 1, 3);
+            sheet.AddMergedRegion(region3);
+
+            CellRangeAddress region4 = new CellRangeAddress(11, 11, 1, 5);
+            sheet.AddMergedRegion(region4);
+
+            CellRangeAddress region5 = new CellRangeAddress(12, 12, 1, 5);
+            sheet.AddMergedRegion(region5);
+
+            CellRangeAddress region6 = new CellRangeAddress(13, 13, 1, 5);
+            sheet.AddMergedRegion(region6);
+
             try
             {
                 FileStream fs = File.OpenWrite(filePath);
                 wb.Write(fs);//向打开的这个Excel文件中写入表单并保存。  
                 fs.Close();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public void CopyExcel(string filePath, Person person)
+        {
+            File.Copy("D:/c#project/vbProject/excel/model.xls", filePath);
+
+            EditExcel(filePath, person);
+        }
+
+        public void EditExcel(string filePath, Person person)
+        {
+            //创建工作薄  
+            IWorkbook wb;
+            string extension = System.IO.Path.GetExtension(filePath);
+
+            FileStream fs = File.OpenRead(filePath);
+            //把XLS文件中数据写入wk中
+            if (extension.Equals(".xls"))
+            {
+                wb = new HSSFWorkbook(fs);
+            }
+            else
+            {
+                wb = new XSSFWorkbook(fs);
+            }
+
+
+
+            ISheet sheet = wb.GetSheetAt(0);
+
+            IRow row;
+            ICell cell;
+
+            int[] rowArr = { 1,2,3};
+            int[] colArr = { 2,3,4};
+
+            //foreach(int i in rowArr)
+            //{
+            row = sheet.GetRow(4);
+            cell = row.GetCell(1);
+
+            //}
+
+
+
+            //object obj = data[i, j];
+            SetCellValue(cell, "libin");
+            //如果是日期，则设置日期显示的格式
+            //if (obj.GetType() == typeof(DateTime))
+            //{
+            //    cell.CellStyle = dateStyle;
+            //}
+
+            try
+            {
+                FileStream file = File.OpenWrite(filePath);
+                wb.Write(file);//向打开的这个Excel文件中写入表单并保存。  
+                file.Close();
             }
             catch (Exception e)
             {

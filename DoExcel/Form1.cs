@@ -1,4 +1,5 @@
 ﻿using DoExcel.Helper;
+using DoExcel.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,8 @@ namespace DoExcel
     public partial class Form1 : Form
     {
         public string originSourcePath = "D:/c#project/vbProject/excel/data.xls";
+        private object excelHelper;
+
         public Form1()
         {
             InitializeComponent();
@@ -31,6 +34,13 @@ namespace DoExcel
             ExcelHelper excelHelper = new ExcelHelper();
 
             excelHelper.WriteToExcel("D:/c#project/vbProject/excel/demo1.xls");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ExcelHelper excelHelper = new ExcelHelper();
+            Person person = new Person();
+            excelHelper.CopyExcel("D:/c#project/vbProject/excel/copy1.xls", person);
         }
     }
 }
