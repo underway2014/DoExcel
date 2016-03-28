@@ -29,59 +29,61 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.labelStatus = new System.Windows.Forms.Label();
+            this.verLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(68, 30);
+            this.button1.Location = new System.Drawing.Point(106, 29);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
-            this.button1.Text = "readExcel";
+            this.button1.Text = "DoExcel";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // labelStatus
             // 
-            this.button2.Location = new System.Drawing.Point(68, 71);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "write";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.labelStatus.AutoSize = true;
+            this.labelStatus.Location = new System.Drawing.Point(36, 80);
+            this.labelStatus.MaximumSize = new System.Drawing.Size(224, 30);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(95, 12);
+            this.labelStatus.TabIndex = 3;
+            this.labelStatus.Text = "准备就绪了哦！ ";
+            this.labelStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.labelStatus.Click += new System.EventHandler(this.label1_Click);
             // 
-            // button3
+            // verLabel
             // 
-            this.button3.Location = new System.Drawing.Point(68, 126);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "copy";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.verLabel.AutoSize = true;
+            this.verLabel.Location = new System.Drawing.Point(209, 155);
+            this.verLabel.MaximumSize = new System.Drawing.Size(120, 0);
+            this.verLabel.Name = "verLabel";
+            this.verLabel.Size = new System.Drawing.Size(0, 12);
+            this.verLabel.TabIndex = 4;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.ClientSize = new System.Drawing.Size(284, 176);
+            this.Controls.Add(this.verLabel);
+            this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "DoExcel";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label labelStatus;
+        private System.Windows.Forms.Label verLabel;
     }
 }
 

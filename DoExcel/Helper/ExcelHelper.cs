@@ -18,7 +18,7 @@ namespace DoExcel.Helper
 {
     class ExcelHelper
     {
-        public void ReadFromExcelFile(string filePath)
+        public List<Person> ReadFromExcelFile(string filePath)
         {
             IWorkbook wk = null;
             string extension = System.IO.Path.GetExtension(filePath);
@@ -40,31 +40,39 @@ namespace DoExcel.Helper
                 ISheet sheet = wk.GetSheetAt(0);
                 IRow row = sheet.GetRow(0);
 
-                int offset = 0;
-                for(int i = 0;i <= sheet.LastRowNum;i++)
+                List<Person> list = new List<Person>();
+
+                for(int i = 1;i <= sheet.LastRowNum;i++)
                 {
+                    
                     row = sheet.GetRow(i);
                     if(row != null)
                     {
-                        for(int j = 0;j < row.LastCellNum; j++)
+                        Person person = new Person();
+                        for (int j = 0;j < row.LastCellNum; j++)
                         {
                             ICell cellValue = row.GetCell(j);
                             if(cellValue != null)
                             {
                                 Console.Write(cellValue.ToString().ToString() + " / j = " + j);
+                                person.setData(cellValue.ToString().ToString(), j);
                             }
                             else
                             {
                                 Console.Write("j = " + j + " / ISNULL");
+                                person.setData("无", j);
                             }
                         }
                         Console.WriteLine("\n");
+                        list.Add(person);
                     }
                 }
+                return list;
 
             }catch(Exception e){
                 Console.WriteLine(e.Message);
             }
+            return null;
         }
 
         public void WriteToExcel(string filePath)
@@ -264,11 +272,11 @@ namespace DoExcel.Helper
             }
         }
 
-        public void CopyExcel(string filePath, Person person)
+        public void CopyExcel(string templatePath, string targetPath, Person person)
         {
-            File.Copy("D:/c#project/vbProject/excel/model.xls", filePath);
+            File.Copy(templatePath, targetPath);
 
-            EditExcel(filePath, person);
+            EditExcel(targetPath, person);
         }
 
         public void EditExcel(string filePath, Person person)
@@ -288,32 +296,26 @@ namespace DoExcel.Helper
                 wb = new XSSFWorkbook(fs);
             }
 
-
-
             ISheet sheet = wb.GetSheetAt(0);
 
             IRow row;
             ICell cell;
 
-            int[] rowArr = { 1,2,3};
-            int[] colArr = { 2,3,4};
+            //int[] rowArr = { 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 9, 10 };
+            //int[] colArr = { 1, 3, 5, 1, 3, 5, 1, 3, 5, 1, 3, 1, 1 };
 
-            //foreach(int i in rowArr)
-            //{
-            row = sheet.GetRow(4);
-            cell = row.GetCell(1);
+            int[] rowArr = { 4, 4, 5, 5, 6, 6, 6, 7, 7, 9, 10 };
+            int[] colArr = { 3, 5, 3, 5, 1, 3, 5, 1, 3, 1, 1 };
 
-            //}
+            int m = 0;
+            foreach (int i in rowArr)
+            {
 
-
-
-            //object obj = data[i, j];
-            SetCellValue(cell, "libin");
-            //如果是日期，则设置日期显示的格式
-            //if (obj.GetType() == typeof(DateTime))
-            //{
-            //    cell.CellStyle = dateStyle;
-            //}
+                row = sheet.GetRow(i);
+                cell = row.GetCell(colArr[m]);
+                SetCellValue(cell, person.getData(m));
+                m++;
+            }
 
             try
             {
