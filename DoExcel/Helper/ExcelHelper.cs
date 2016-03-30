@@ -54,12 +54,12 @@ namespace DoExcel.Helper
                             ICell cellValue = row.GetCell(j);
                             if(cellValue != null)
                             {
-                                Console.Write(cellValue.ToString().ToString() + " / j = " + j);
+                                //Console.Write(cellValue.ToString().ToString() + " / j = " + j);
                                 person.setData(cellValue.ToString().ToString(), j);
                             }
                             else
                             {
-                                Console.Write("j = " + j + " / ISNULL");
+                                //Console.Write("j = " + j + " / ISNULL");
                                 person.setData("无", j);
                             }
                         }
